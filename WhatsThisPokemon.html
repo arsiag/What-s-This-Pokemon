@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Pokeman</title>
+        <meta charset="UTF-8">
+        <link href="WhatsThisPokemon.css" rel="stylesheet">
+        <script type="text/javascript" src= "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                var HTMLstring;
+                for(var i = 1; i < 152; i++){
+                    HTMLstring = '<img id="';
+                    HTMLstring += i;
+                    HTMLstring += '"src="http://pokeapi.co/media/img/';
+                    HTMLstring += i;
+                    HTMLstring += '.png"';
+                    HTMLstring += ' alt="Pokeman Picture">';
+                    $(".container").append(HTMLstring);
+                }
+
+                $(document).on("click", "img", function(){
+                    var id=$(this).attr("id");
+                    var img = $(this).attr("src");
+                    var apiurl = 'http://pokeapi.co/api/v1/pokemon/' + id +'/';
+                
+                    $.get(apiurl, function(res) {
+
+                        POKEDEXstring = '<h1>' + res.name + '</h1>';
+                        POKEDEXstring += '<img src=';
+                        POKEDEXstring += img;
+                        POKEDEXstring += '>';
+                        POKEDEXstring += '<h2>Types</h2>';
+                        POKEDEXstring += '<ul>'
+                        for(var i = 0; i < res.types.length; i++) {
+                            POKEDEXstring += '<li>'
+                            POKEDEXstring += res.types[i].name;
+                            POKEDEXstring += '</li>'
+                        }
+                        POKEDEXstring += '</ul>'
+                        POKEDEXstring += '<h2>Height</h2><h3>';
+                        POKEDEXstring += res.height;
+                        POKEDEXstring += '</h3><h2>Weight</h2><h3>';
+                        POKEDEXstring += res.weight;
+                        POKEDEXstring += '</h3>';
+
+                        $("#pokedex").html(POKEDEXstring);
+                        $('html, body').animate({scrollTop: 0}, 600);
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            
+        </div>
+        <div id="pokedex">
+
+        </div>
+    </body>
+</html>
